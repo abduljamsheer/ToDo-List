@@ -1,0 +1,10 @@
+body {
+  /* background: linear-gradient(180deg, #00c9ff, #92fe9d);  */
+  background: #f1f2f6; 
+  background-attachment: fixed;
+  background-size: cover;
+  backdrop-filter: blur(20px); 
+  font-family: 'Courier New', monospace;
+  color: #fff;
+}
+
