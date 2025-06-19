@@ -35,11 +35,11 @@ const navigate=useNavigate()
             </>
           )}
         </ul>
-        {/* <div className="hamburger" onClick={toggleMenu}>
+        <div className="hamburger" onClick={toggleMenu}>
           <div className={`bar ${menuOpen ? 'rotate1' : ''}`}></div>
           <div className={`bar ${menuOpen ? 'fade' : ''}`}></div>
           <div className={`bar ${menuOpen ? 'rotate2' : ''}`}></div>
-        </div> */}
+        </div>
       </div>
     </nav>
   );

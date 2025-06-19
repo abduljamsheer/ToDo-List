@@ -12,10 +12,11 @@ body {
   max-width: 90vw;
   min-height: 73.5vh;
   margin: auto;
-  border:1px solid black;
+  border:1px solid #e0e0e0;
   border-radius: 0.6rem;
   padding: 1.6rem;
   margin-top: 2.6rem;
+  background-color: #fdf9f4;
 }
 
 .todo-header {
@@ -35,8 +36,9 @@ body {
   align-items: center;
   font-weight: bold;
   font-size: 1.6rem;
-  text-shadow: 2px 2px 2px black;
-  color: #fff;
+  font-family: 'Inter', sans-serif;
+  /* text-shadow: 2px 2px 2px black; */
+  color: 	#0d1b46;
 }
 
 .todo-date svg {
@@ -62,7 +64,7 @@ body {
   font-size: 1.3rem;
   font-weight: bold;
   border-radius: 3px;
-   color:green;
+   color:#0d1b46;
  text-shadow: 1px 1px 1px rgb(3, 3, 50);
 }
 
@@ -92,7 +94,7 @@ outline: none;
 .submit-btn {
   position: relative;
   right: 60px;
-  background: #0984e3;
+  background: #0d1b46;
   border: none;
   border-radius: 50%;
   padding: 12px;
@@ -134,13 +136,13 @@ outline: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #d3d3d3;
+  background-color: #f5f1e9;
   border-radius: 10px;
   padding: 15px;
   flex-wrap: wrap;
 }
 .todo-item:hover{
-   background-color: #999;
+   background-color: #f5f1f9;
 }
 .todo-left {
   display: flex;
@@ -236,7 +238,19 @@ outline: none;
     flex-direction: column;
     gap: 10px;
   }
-
+  .form-group{
+        flex: 1 1 98px;
+  }
+  .form-group label{
+    text-align: center;
+  }
+  .form-group input:first-child {
+    margin-left: 1.5rem;
+}
+  
+  .submit-btn{
+    right: 15px;
+  }
   .todo-actions {
     justify-content: center;
     width: 100%;
