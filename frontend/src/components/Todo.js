@@ -10,6 +10,11 @@ const TodoApp = () => {
     const [tasks, setTasks] = useState([]);
     const [expandedTaskId, setExpandedTaskId] = useState(null);
     const [activeTab, setActiveTab] = useState('All');
+    const [editingTaskId, setEditingTaskId] = useState(null);
+    const [editedTask, setEditedTask] = useState({
+        title: '',
+        description: ''
+    });
     const navigate = useNavigate();
     const URL = 'http://localhost:8001';
 
@@ -98,8 +103,7 @@ const TodoApp = () => {
             if (!response.ok) {
                 throw new Error(data.message || 'Failed to create task');
             }
-
-            setTasks(prev => [...prev, data.task]);
+            setTasks(prev => [...prev, data.tasks]);
             setTaskInput({
                 title: '',
                 description: '',
@@ -118,19 +122,117 @@ const TodoApp = () => {
     const HandleDisc = (id) => {
         setExpandedTaskId(prevId => (prevId === id ? null : id));
     };
+    const toggleComplete = async (id) => {
+        const token = getToken('token');
+        if (!token) {
+            alert('You need to login first.');
+            navigate('/');
+            return;
+        }
 
-    const toggleComplete = (id) => {
-        setTasks((prev) =>
-            prev.map((task) =>
-                (task.id || task._id) === id
-                    ? { ...task, completed: !task.completed }
-                    : task
-            )
-        );
+        const taskToUpdate = tasks.find(task => (task.id || task._id) === id);
+        if (!taskToUpdate) return;
+
+        const updatedCompletedStatus = !taskToUpdate.completed;
+
+        try {
+            const response = await fetch(`${URL}/api/v1/todos/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ completed: updatedCompletedStatus }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to update task');
+            }
+
+            setTasks((prev) =>
+                prev.map((task) =>
+                    (task.id || task._id) === id
+                        ? { ...task, completed: updatedCompletedStatus }
+                        : task
+                )
+            );
+        } catch (error) {
+            alert(`Error updating task: ${error.message}`);
+        }
+    };
+    const editTask = (task) => {
+        setEditingTaskId(task._id || task.id);
+        setEditedTask({
+            title: task.title,
+            description: task.description || ''
+        });
+    };
+    const saveTask = async (id) => {
+        const token = getToken('token');
+        if (!token) {
+            alert('You need to login first.');
+            navigate('/');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${URL}/api/v1/todos/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(editedTask),
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to update task');
+            }
+
+            setTasks((prev) =>
+                prev.map((task) =>
+                    (task.id || task._id) === id ? { ...task, ...editedTask } : task
+                )
+            );
+
+            setEditingTaskId(null);
+            setEditedTask({ title: '', description: '' });
+        } catch (error) {
+            alert(`Error saving task: ${error.message}`);
+        }
     };
 
-    const deleteTask = (id) => {
-        setTasks((prev) => prev.filter((task) => (task.id || task._id) !== id));
+    const cancelEdit = () => {
+        setEditingTaskId(null);
+        setEditedTask({ title: '', description: '' });
+    };
+    const deleteTask = async (id) => {
+        alert('Are you sure you want to delete this task?')
+        const token = getToken('token');
+        if (!token) {
+            alert('You need to login first.');
+            navigate('/');
+            return;
+        }
+        try {
+            const response = await fetch(`${URL}/api/v1/todos/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to delete task');
+            }
+            setTasks((prev) => prev.filter((task) => (task.id || task._id) !== id));
+        } catch (error) {
+            alert(`Error deleting task: ${error.message}`)
+        }
     };
 
     const filteredTasks = tasks.filter(task => {
@@ -225,6 +327,7 @@ const TodoApp = () => {
                     {filteredTasks.map((task, index) => {
                         if (!task || typeof task !== 'object') return null;
                         const taskId = task.id || task._id;
+                        const isEditing = editingTaskId === taskId;
 
                         return (
                             <div key={taskId || index} className="todo-item" onClick={() => HandleDisc(taskId)}>
@@ -236,8 +339,30 @@ const TodoApp = () => {
                                         onChange={() => toggleComplete(taskId)}
                                     />
                                     <div>
-                                        <p className="todo-title">{task.title || 'Untitled'}</p>
-                                        {expandedTaskId === taskId && <p>{task.description}</p>}
+                                        {isEditing ? (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    className="edit-input"
+                                                    value={editedTask.title}
+                                                    onChange={(e) =>
+                                                        setEditedTask((prev) => ({ ...prev, title: e.target.value }))
+                                                    }
+                                                />
+                                                <textarea
+                                                    className="edit-textarea"
+                                                    value={editedTask.description}
+                                                    onChange={(e) =>
+                                                        setEditedTask((prev) => ({ ...prev, description: e.target.value }))
+                                                    }
+                                                />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p className="todo-title">{task.title || 'Untitled'}</p>
+                                                {expandedTaskId === taskId && <p>{task.description}</p>}
+                                            </>
+                                        )}
                                         <p className="todo-date">
                                             <FaCalendarAlt /> {task.dueDate || 'No due date'}
                                         </p>
@@ -255,25 +380,34 @@ const TodoApp = () => {
                                         </span>
                                     )}
                                 </div>
-                                {/* <div className="todo-actions">
-                                    <FaEdit style={{ opacity: 0.5 }} />
-                                    <FaTrash onClick={() => deleteTask(taskId)} />
-                                </div> */}
                                 <div className="todo-actions">
-                                    <FaEdit
-                                        style={{ opacity: 0.5, cursor: 'pointer' }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            // call your edit handler here (if any)
-                                        }}
-                                    />
-                                    <FaTrash
-                                        style={{ cursor: 'pointer' }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            deleteTask(taskId);
-                                        }}
-                                    />
+                                    {isEditing ? (
+                                        <>
+                                            <button onClick={(e) => { e.stopPropagation(); saveTask(taskId); }}>
+                                                Save
+                                            </button>
+                                            <button onClick={(e) => { e.stopPropagation(); cancelEdit(); }}>
+                                                Cancel
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FaEdit
+                                                style={{ opacity: 0.5, cursor: 'pointer' }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    editTask(task);
+                                                }}
+                                            />
+                                            <FaTrash
+                                                style={{ cursor: 'pointer' }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteTask(taskId);
+                                                }}
+                                            />
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         );

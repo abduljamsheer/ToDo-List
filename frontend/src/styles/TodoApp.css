@@ -206,7 +206,63 @@ outline: none;
   font-size: 1.2rem;
   cursor: pointer;
 }
+.todo-actions button {
+  margin: 0 5px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
+.todo-actions button:hover {
+  opacity: 0.8;
+}
+.todo-item input.edit-input,
+.todo-item textarea.edit-textarea {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
+
+.todo-item textarea.edit-textarea {
+  min-height: 60px;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.todo-actions button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.todo-actions button:hover {
+  opacity: 0.9;
+}
+
+.todo-actions button:nth-child(1) {
+  background-color: #4caf50; 
+  color: white;
+}
+
+.todo-actions button:nth-child(2) {
+  background-color: #f44336; 
+  color: white;
+}
 .todo-footer {
   display: flex;
   justify-content: space-between;

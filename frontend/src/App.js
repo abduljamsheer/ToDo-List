@@ -12,27 +12,22 @@ function App() {
   const NotFound = () => {
     return (
       <h1 className='not-found'>
-    404 Not Found
+        404 Not Found
       </h1 >
     )
-}
+  }
   return (
     <BrowserRouter>
-    <Routes>
-    
-    
-      <Route path='/' element={<Login/>} />
-      <Route path='/signup' element={<SignUp/>} />
-      <Route path="*" element={<NotFound />} />
-      {/* <Route path='/todo' element={<TodoApp/>} /> */}
-      <Route path='/home' element={<HomePage/>} />
-
-      <Route path='/todo' element={<ProtectedRoute>
-        <TodoApp/>
-      </ProtectedRoute>} />
-      {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
-    </Routes>
-  </BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='/signup' element={<SignUp />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path='/home' element={<HomePage />} />
+        <Route path='/todo' element={<ProtectedRoute>
+          <TodoApp />
+        </ProtectedRoute>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

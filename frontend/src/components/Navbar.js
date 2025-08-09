@@ -24,7 +24,7 @@ const navigate=useNavigate()
         <div className="logo"> To-Do List</div>
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
           <li><a href="/home">Home</a></li>
-          <li><a href="#">Tasks</a></li>
+          <li><a href="/todo">Tasks</a></li>
           <li><a href="#">About</a></li>
           {isLoggedIn ? (
             <li className='logout' onClick={handleLogout}>Logout</li>

@@ -54,7 +54,7 @@ padding: 1.5rem 2rem;
 }
 
 /* Hamburger animation */
-/* .rotate1 {
+.rotate1 {
   transform: rotate(45deg) translate(5px, 5px);
 }
 
@@ -64,7 +64,7 @@ padding: 1.5rem 2rem;
 
 .rotate2 {
   transform: rotate(-45deg) translate(6px, -6px);
-} */
+}
 
 /* Responsive behavior */
 @media (max-width: 768px) {
@@ -83,8 +83,14 @@ padding: 1.5rem 2rem;
   .nav-links.open {
     display: flex;
   }
-
+.logo {
+  font-size: 1.5rem;
+  /* margin-right: 10px; */
+  font-weight: bold;
+}
   .hamburger {
     display: flex;
+        position: relative;
+    left: 40px;
   }
 }

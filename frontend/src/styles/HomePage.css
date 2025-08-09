@@ -108,7 +108,10 @@ body {
     flex-direction: column;
     text-align: center;
   }
-
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
   .nav-links {
     display: none;
   }
