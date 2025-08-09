@@ -77,11 +77,7 @@ router.post("/login", async (req, res) => {
     try {
         const { email, password } = req.body;
         user = await User.findOne({ email: email });
-       
-        
-        // if(!user){
-        //     user = await User.findOne({ phone: contact });
-        // }
+     
         if (!user) {
             return res.status(404).json({
                 status: "Failed",
