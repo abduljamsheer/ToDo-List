@@ -1,3 +1,4 @@
+const dotenv=require('dotenv').config()
 const express=require('express');
 const app=express()
 const port=8001;
@@ -13,9 +14,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use('/api/v1/user', require('./routes/userRoutes'));
 app.use('/api/v1/todos', require('./routes/todoRoutes.js'));
-app.get('/',(req,res)=>{
-    res.send("ok")
-})
+// app.get('/',(req,res)=>{
+//     res.send("ok")
+// })
 connection()
 app.listen(port,()=>console.log(`is up at port ${port}`)
 )

@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-var jwt = require('jsonwebtoken');
 const Task = require("../models/task.js");
 const Auth =require('./auth.js')
 
@@ -86,7 +85,6 @@ router.delete('/:id',Auth, async (req,res)=>{
             message: 'Task deleted successfully',
         });
   } catch (error) {
-     console.error('Error deleting task:', error);
         res.status(500).json({
             status: 'Fail',
             message: 'Server Error',

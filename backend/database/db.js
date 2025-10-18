@@ -1,4 +1,4 @@
-// const dotenv = require("dotenv").config();
+const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', false);
 const url = process.env.DATABASE_URL || 'mongodb://localhost:27017/Todo-list';
@@ -10,6 +10,7 @@ const connection = async () => {
         console.log(`connected with ${type} database`);
     } catch(err) {
         console.log("error while connecting with database", err.message);
+        process.exit(1);
     }
 }
 module.exports = connection;

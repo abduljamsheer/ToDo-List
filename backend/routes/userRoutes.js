@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
 
     const {
         name, email,
-        password,confirmPassword
+        password,
     } = req.body;
 
     try {
@@ -64,7 +64,6 @@ router.post("/register", async (req, res) => {
             message: "Register Successfully",
         })
     } catch (err) {
-          console.error("Register Error:", err);
         res.status(500).json({
             status: "Failed",
             message: err.message
