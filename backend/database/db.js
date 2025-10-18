@@ -5,7 +5,7 @@ const url = process.env.DATABASE_URL || 'mongodb://localhost:27017/Todo-list';
 
 const connection = async () => {
     try {
-        await mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
+        await mongoose.connect(url, {serverSelectionTimeoutMS: 10000 })
         const type = (url == process.env.DATABASE_URL) ? 'remote' : 'local';
         console.log(`connected with ${type} database`);
     } catch(err) {
