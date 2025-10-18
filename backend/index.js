@@ -5,7 +5,8 @@ const port=process.env.PORT ||8001;
 const connection = require("./database/db.js");
 const cors = require("cors");
 app.use(cors({
-  origin: '*'
+  origin: '*',
+   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
 app.use(express.json());
