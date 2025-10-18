@@ -11,7 +11,7 @@ const SignUp = () => {
         password: '',
         confirmPassword: ''
     });
-    const URL='http://localhost:8001';
+    const URL=process.env.REACT_APP_API_URL||'http://localhost:8001';
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -26,7 +26,6 @@ const SignUp = () => {
         }
 
         console.log("Form Submitted:", formData);
-        // Add sign-up logic here (API call, etc.)
         fetch(`${URL}/api/v1/user/register`,{
       method:'POST',
       headers:{
@@ -35,15 +34,12 @@ const SignUp = () => {
       body:JSON.stringify(formData)
     }).then((res)=>res.json()).
     then((data)=>{
-      alert((prev)=>({
-        ...prev,
-        message:data.message,
-      }));
+      alert(data.message);
       if(data.status=="Success"){
         setTimeout(()=>{
           navigate('/')
 
-        },3000)
+        },2000)
       }
     }).catch(err=>alert(err.message))
     };

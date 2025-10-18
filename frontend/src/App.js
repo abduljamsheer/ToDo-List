@@ -9,6 +9,7 @@ import HomePage from './components/Home';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
+ 
   const NotFound = () => {
     return (
       <h1 className='not-found'>

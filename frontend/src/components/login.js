@@ -3,9 +3,8 @@ import '../styles/SignIn.css';
 import TodoNavBar from './Navbar';
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../AuthOparation';
-
 const Login = () => {
-    const URL='http://localhost:8001'
+    const URL=process.env.REACT_APP_API_URL||'http://localhost:8001'
     const [formData, setFormData] = useState({ email: '', password: '' });
     const navigate=useNavigate()
     const handleChange = (e) => {
@@ -13,10 +12,6 @@ const Login = () => {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
-        console.log('Form Submitted:', formData);
-        // Add login logic here (e.g., API call)
-    };
     const handleSignIn = (e) => {
         e.preventDefault();
         // if (!validateForm()) return;
@@ -36,7 +31,6 @@ const Login = () => {
                     alert(data.message);
                 } else if (data.status === "Success" && data.token) {
                     setToken("token", data.token);
-                    console.log('sucess',data.token);
                     alert('Login successful!');
                     navigate("/todo");
                 } else {
@@ -45,13 +39,10 @@ const Login = () => {
             }).catch((error) => {
                 alert(error.message)
             })
-
-
     };
     return (
         <>
         <TodoNavBar/>
-
             <div className="signin-container">
                 <form className="signin-form" onSubmit={handleSignIn}>
                     <h2>Sign In</h2>

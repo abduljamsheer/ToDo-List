@@ -16,7 +16,7 @@ const TodoApp = () => {
         description: ''
     });
     const navigate = useNavigate();
-    const URL = 'http://localhost:8001';
+    const URL = process.env.REACT_APP_API_URL||'http://localhost:8001';
 
     const [taskInput, setTaskInput] = useState({
         title: '',
